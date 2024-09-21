@@ -28,6 +28,7 @@ export const Config: Schema<Config> = Schema.object({
 })
 
 export function apply(ctx: Context, config: Config) {
+  ctx.database.drop('phigros_alias_v3')
   const api = new API(ctx)
   const querySong = async (alias: string, session: Session): Promise<SongInfo> => {
     const matchs = await ctx.database.get('phigros_alias_v3', { alias: { $regex: alias.toLowerCase() } })
@@ -41,7 +42,7 @@ export function apply(ctx: Context, config: Config) {
       await session.send(
         h('message', { forward: true }, [
           h('message', [h.i18n('.select-song-prompt')]),
-          ...songs.map((s, i) => h('message', [`${i + 1}. ${s.name} 「${s.artist}」`])),
+          ...songs.map((s, i) => h('message', [`${i + 1}. ${s.song} 「${s.composer}」`])),
         ]))
       const index = +await session.prompt()
       if (!index) throw new SessionError('.cancel')
@@ -83,8 +84,8 @@ export function apply(ctx: Context, config: Config) {
     const songsInfo = await api.songsInfo()
     await Promise.all(songsInfo.map(i =>
       Promise.all([
-        setAilas(i.name.toLowerCase(), i.id),
-        setAilas(i.artist.toLowerCase(), i.id),
+        setAilas(i.song.toLowerCase(), i.id),
+        setAilas(i.composer.toLowerCase(), i.id),
       ])
     ))
   })
@@ -114,7 +115,7 @@ export function apply(ctx: Context, config: Config) {
       if (!alias) return session.text('.cancel')
       await setAilas(alias, song.id)
 
-      return session.text('.success', [song.name, alias])
+      return session.text('.success', [song.song, alias])
     })
 
   const listAlias = ctx.command('phigros.list-alias <name:text>')
@@ -122,7 +123,7 @@ export function apply(ctx: Context, config: Config) {
       const song = await querySong(name, session)
       const alias = await ctx.database.get('phigros_alias_v3', { songId: song.id })
       return h('', [
-        h.i18n('.alias', [song.name]),
+        h.i18n('.alias', [song.song]),
         ...alias.map(a => h('p', [a.alias]))
       ])
     })
@@ -167,7 +168,8 @@ export function apply(ctx: Context, config: Config) {
         // }
         
         if (a == undefined) {
-          console.log(r)
+          console.log('wrong')
+          console.log(r[0])
         } 
         return [r[1], a]
       }))
