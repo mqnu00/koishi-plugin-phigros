@@ -28,7 +28,6 @@ export const Config: Schema<Config> = Schema.object({
 })
 
 export function apply(ctx: Context, config: Config) {
-  ctx.database.drop('phigros_alias_v3')
   const api = new API(ctx)
   const querySong = async (alias: string, session: Session): Promise<SongInfo> => {
     const matchs = await ctx.database.get('phigros_alias_v3', { alias: { $regex: alias.toLowerCase() } })
