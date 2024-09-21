@@ -13,4 +13,6 @@ Koishi plugin for everything Phigros!
 ## 感谢
 本项目fork自[koishi-plugin-phigros](https://github.com/koishijs/koishi-plugin-phigros/)，在npm发布的时候重命名了
 
+本项目使用了[Phigros](https://github.com/ssmzhn/Phigros)存储的歌曲仓库
+
 特别感谢 [PhigrosLibrary](https://github.com/7aGiven/PhigrosLibrary/) 提供的存档解析思路。
