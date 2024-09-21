@@ -343,7 +343,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('${phi.song.thumbnail}');
+  background-image: url('${phi.song.illustration}');
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 0;
@@ -402,8 +402,8 @@ function renderSong(order: string | number, rks: RKSInfo) {
     </div>
 
     <div class="illustration no-unskew">
-      <div class="illus" style={`background: url('${rks.song.thumbnail}'), linear-gradient(transparent 60%, #000a 90%); background-size: cover;`}>&nbsp;</div>
-      <div class="name">{rks.song.name}</div>
+      <div class="illus" style={`background: url('${rks.song.illustration}'), linear-gradient(transparent 60%, #000a 90%); background-size: cover;`}>&nbsp;</div>
+      <div class="name">{rks.song.song}</div>
     </div>
 
     <div class="difficulty no-unskew">
@@ -454,7 +454,7 @@ export function renderScore(record: SongRecord, info: SongInfo) {
       background-color: black;
       display: flex;
       justify-content: center;
-      background-image: url('${info.thumbnail}');
+      background-image: url('${info.illustration}');
       background-repeat: no-repeat;
       background-size: cover;
       font-family: 'Saira', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
@@ -588,7 +588,7 @@ export function renderScore(record: SongRecord, info: SongInfo) {
       height: 263.5px;
       background-blend-mode: color;
       background-size: cover;
-      background: url('${info.illustration}'), linear-gradient(transparent 80%, #000a);
+      background: url('${info.illustration_big}'), linear-gradient(transparent 80%, #000a);
       background-size: cover;
     }
 
@@ -613,8 +613,8 @@ export function renderScore(record: SongRecord, info: SongInfo) {
       <div id="column" class="parallelogram-column">
         <div class="no-unskew">
           <div id="info">
-            <span id="name">{info.name}</span>
-            <span id="artist">{info.artist}</span>
+            <span id="name">{info.song}</span>
+            <span id="artist">{info.composer}</span>
           </div>
           <div id="cover">&nbsp;</div>
         </div>
