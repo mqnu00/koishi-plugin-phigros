@@ -2,7 +2,6 @@ import type { SongRecord, LevelRecord, SongInfo, RKSInfo, Save, SaveSummary } fr
 import { createDecipheriv } from 'crypto'
 import { fromBuffer, Entry } from 'yauzl'
 import type { Quester, Context } from 'koishi'
-import songs from './data/songs.json'
 import * as fs from 'fs'
 import { join } from 'path'
 
@@ -113,17 +112,51 @@ export class API {
     return nickname
   }
 
-  songsInfo()  {
-    // Promise<SongInfo[]>
-    // const data = fs.readFileSync('/home/mqnu/program/koishi-app/external/phigros/data/songs.json', 'utf8');
-    // const json = JSON.parse(data);
-    // console.log(json);
-    // return Promise.resolve(JSON.parse(fs.readFileSync('/home/mqnu/program/koishi-app/external/phigros/data/songs.json', 'utf8')));
-    // this.http.get()
-    return Promise.all(JSON.parse(JSON.stringify(songs)))
+  async songsInfo(): Promise<SongInfo[]> {
+    let tmp = await this.http.get('https://ghp.ci/https://raw.githubusercontent.com/ssmzhn/Phigros/refs/heads/main/Phigros.json')
+    tmp = JSON.parse(tmp)
+    tmp =  Object.keys(tmp).map(key => {
+      return { songName: key, ...tmp[key] };
+  });
+    let res: SongInfo[] = []
+    console.log(tmp.length)
+    for (let i = 0; i < tmp.length; i++) {
+      tmp[i].song = tmp[i].song.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFFa-zA-Z0-9\u3040-\u309F\u30A0-\u30FF]/g, "");
+      tmp[i].composer = tmp[i].composer.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFFa-zA-Z0-9\u3040-\u309F\u30A0-\u30FF]/g, "");
+      if (tmp[i].song == 'PRAW') {
+        tmp[i].composer = 'Bluewind'
+      } else if (tmp[i].song == 'NextTime') {
+        tmp[i].composer = 'SaMZIng' 
+      } else if (tmp[i].song == '月下缭乱') {
+        tmp[i].composer = '月見静華vsLUNARiUM' 
+      } else if (tmp[i].song == 'Shadow') {
+        tmp[i].composer = 'SumaiLightvs姜米條' 
+      }
+      if (tmp[i].composer == 'FLuoRiTe姜米條') {
+        tmp[i].song = 'NYA'
+      } else if (tmp[i].composer == '1112vsStar') {
+        tmp[i].song = 'Poseidon'
+      } else if (tmp[i].composer == 'NeutralMoon') {
+        tmp[i].song = 'AnotherMe'
+      } else if (tmp[i].composer == 'MALVA') {
+        tmp[i].song = 'Trane'
+      }
+      tmp[i].id = tmp[i].song + '.' + tmp[i].composer
+      let tt: SongInfo = {
+        id: tmp[i].id,
+        song: tmp[i].song,
+        composer: tmp[i].composer,
+        chart: tmp[i].chart,
+        illustration: tmp[i].illustration,
+        illustrator: tmp[i].illustrator,
+        illustration_big: tmp[i].illustration_big
+      };
+      res.push(tt)
+      // console.log(tt.id)
+    }
+    return res
   }
 }
-
 export function* parse(buf: Buffer): Generator<[string, SongRecord]> {
   let pos = +(buf.readUint8(0) << 24 >> 24 < 0) + 1
   while (pos < buf.length) {
