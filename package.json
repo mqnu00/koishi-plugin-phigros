@@ -1,15 +1,16 @@
 {
   "name": "koishi-plugin-phigros-redo",
-  "description": "一堆依赖给我整麻了，拉源代码也不知道怎么在npm发布，重命名一个吧，获取phigros.b19的",
+  "description": "根据koishi-plugin-phigros修改，拉取另一个songs.json来源，针对一些歌曲曲名和作曲者的名字做了修改",
   "contributors": [
-    "seidko <seidko.coding@gmail.com>"
+    "seidko <seidko.coding@gmail.com>",
+    "mqnu00 <647983952@qq.com>"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/mqnu00/koishi-plugin-phigros"
   },
   "homepage": "https://github.com/mqnu00/koishi-plugin-phigros",
-  "version": "2.0.5",
+  "version": "2.0.8",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "author": {
