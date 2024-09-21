@@ -14,13 +14,17 @@ export interface Chart {
 }
 
 export interface SongInfo {
+  // song.composer
   id: string
-  name: string
-  artist: string
+  // 曲谱名 name
+  song: string
+  // 作曲者 artist
+  composer: string
   chart: { [key: string]: Chart }
   illustration: string
   illustrator: string
-  thumbnail: string
+  // illustration_big thumbnail
+  illustration_big: string
 }
 
 export interface RKSInfo {
