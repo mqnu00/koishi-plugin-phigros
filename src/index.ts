@@ -89,7 +89,7 @@ export function apply(ctx: Context, config: Config) {
     ))
   })
 
-  const unbind = ctx.command('phigros.unbind')
+  const unbind = ctx.command('phigros/unbind')
     .userFields(['phiToken'])
     .action(({ session }) => {
       if (!session.user.phiToken) return session.text('.no-token')
@@ -97,7 +97,7 @@ export function apply(ctx: Context, config: Config) {
       return session.text('.success')
     })
 
-  const bind = ctx.command('phigros.bind <token:string>', { checkArgCount: true })
+  const bind = ctx.command('phigros/bind <token:string>', { checkArgCount: true })
     .userFields(['phiToken'])
     .action(({ session }, token) => {
       if (!tokenPattern.exec(token)) return session.text('.invalid')
@@ -105,7 +105,7 @@ export function apply(ctx: Context, config: Config) {
       return session.text('.success')
     })
 
-  const alias = ctx.command('phigros.alias <name:text>', { checkArgCount: true })
+  const alias = ctx.command('phigros/alias <name:text>', { checkArgCount: true })
     .action(async ({ session }, name) => {
       const song = await querySong(name, session)
 
@@ -117,7 +117,7 @@ export function apply(ctx: Context, config: Config) {
       return session.text('.success', [song.song, alias])
     })
 
-  const listAlias = ctx.command('phigros.list-alias <name:text>')
+  const listAlias = ctx.command('phigros/list-alias <name:text>')
     .action(async ({ session }, name) => {
       const song = await querySong(name, session)
       const alias = await ctx.database.get('phigros_alias_v3', { songId: song.id })
@@ -127,7 +127,7 @@ export function apply(ctx: Context, config: Config) {
       ])
     })
 
-  const score = ctx.command('phigros.score <name:text>', { checkArgCount: true })
+  const score = ctx.command('phigros/score <name:text>', { checkArgCount: true })
     .userFields(['phiToken'])
     .action(async ({ session }, name) => {
       if (!session.user.phiToken) return session.text('.no-token')
@@ -142,7 +142,7 @@ export function apply(ctx: Context, config: Config) {
       return renderScore(record[1], song)
     })
 
-  const b19 = ctx.command('phigros.b19')
+  const b19 = ctx.command('phigros/b19')
     .userFields(['phiToken'])
     .action(async ({ session }) => {
       if (!session.user.phiToken) return session.text('.no-token')
