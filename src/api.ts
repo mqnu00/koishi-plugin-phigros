@@ -131,6 +131,8 @@ export class API {
         tmp[i].composer = '月見静華vsLUNARiUM' 
       } else if (tmp[i].song == 'Shadow') {
         tmp[i].composer = 'SumaiLightvs姜米條' 
+      } else if (tmp[i].song == '月詠に鳴る') {
+        tmp[i].composer = 'Feryquitousfeat藍月なくる'
       }
       if (tmp[i].composer == 'FLuoRiTe姜米條') {
         tmp[i].song = 'NYA'

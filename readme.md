@@ -16,3 +16,6 @@ Koishi plugin for everything Phigros!
 本项目使用了[Phigros](https://github.com/ssmzhn/Phigros)存储的歌曲仓库
 
 特别感谢 [PhigrosLibrary](https://github.com/7aGiven/PhigrosLibrary/) 提供的存档解析思路。
+
+## 更新记录
+v2.0.11: `月詠に鳴る.Freyquitousfeat蓝月なくる` 修改为 `月詠に鳴る.Feryquitousfeat藍月なくる`
