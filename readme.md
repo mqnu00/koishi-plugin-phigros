@@ -19,3 +19,7 @@ Koishi plugin for everything Phigros!
 
 ## 更新记录
 v2.0.11: `月詠に鳴る.Freyquitousfeat蓝月なくる` 修改为 `月詠に鳴る.Feryquitousfeat藍月なくる`
+
+v2.0.12: `祈我ら神祖と共に歩む者なり` 修改为 `祈-我ら神祖と共に歩む者なり-`
+
+v2.0.13: 新增b40，微调`score`指令返回的图样式
