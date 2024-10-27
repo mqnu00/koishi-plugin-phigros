@@ -392,6 +392,386 @@ body {
   </html>
 }
 
+export function renderB40(
+  playerName: string,
+  rks: number,
+  phi: RKSInfo,
+  b19: RKSInfo[],
+  challangeRank: string,
+  challangeLevel: number,
+) {
+  return <html>
+    <head>
+      <style>{`
+
+@import url('https://fonts.googleapis.com/css?family=Saira');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC');
+
+:root {
+  --trans-black: #0006;
+  --trans-white: #FFFD
+}
+
+body {
+  margin: 0;
+  font-family: 'Saira', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+}
+
+.songs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.block {
+  color: var(--trans-white);
+  background-color: var(--trans-black);
+  border-right: 4px solid var(--trans-white);
+  box-shadow: 0 0 20px black;
+}
+
+.shadow {
+  text-shadow: 0 0 15px #00d2ff;
+}
+
+.parallelogram {
+  transform: skew(-20deg);
+  overflow: visible;
+}
+
+.parallelogram>*:not(.no-unskew) {
+  transform: skew(20deg);
+}
+
+.no-unskew>*:not(.no-unskew) {
+  transform: skew(20deg);
+}
+
+.rank {
+  position: relative;
+  width: 50px;
+  line-height: 20px;
+  height: 20px;
+  text-align: center;
+  overflow: visible;
+  z-index: 1;
+}
+
+.rank::before {
+  content: "";
+  position: absolute;
+  inset: 0px;
+  z-index: -1;
+  filter: blur(10px);
+}
+
+.rank-rainbow {
+  border-left: 3px solid #00d2ff;
+  border-right: 3px solid #ff2f00;
+  background: linear-gradient(to right, #00d2ff33, #00ff0033, #ff2f0033);
+}
+
+.rank-rainbow::before {
+  background: linear-gradient(to right, #00d2ff90, #00ff0090, #ff2f0090);
+}
+
+.rank-gold {
+  border-left: 3px solid #ffd700;
+  border-right: 3px solid #ffd700;
+  background: #ffd70033;
+}
+
+.rank-gold::before {
+  background: #ffd70077;
+}
+
+.rank-red {
+  border-left: 3px solid #ff4500;
+  border-right: 3px solid #ff4500;
+  background: #ff450033;
+}
+
+.rank-red::before {
+  background: #ff450077;
+}
+
+.rank-blue {
+  border-left: 3px solid #00f2ff;
+  border-right: 3px solid #00f2ff;
+  background: #00f2ff33;
+}
+
+.rank-blue::before {
+  background: #00f2ff77;
+}
+
+.rank-green {
+  border-left: 3px solid #22cc00;
+  border-right: 3px solid #22cc00;
+  background: #22cc0033;
+}
+
+.rank-green::before {
+  background: #22cc0077;
+}
+
+.order {
+  height: 20px;
+  width: 27px;
+  background-color: var(--trans-white);
+  line-height: 20px;
+  text-align: center;
+  align-self: flex-start;
+  box-shadow: 0 0 30px black;
+}
+
+.record {
+  height: 80px;
+  width: 200px;
+  position: relative;
+  display: grid;
+  grid-template:
+    "ranking score" 40px
+    "ranking acc" 40px
+    / 80px 1fr;
+}
+
+.ranking {
+  grid-area: ranking;
+  height: 100%;
+}
+
+.score {
+  font-size: 25px;
+  border-bottom: solid 1px #fff;
+}
+
+.level {
+  font-size: 12px;
+}
+
+.song {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+
+.difficulty {
+  position: absolute;
+  bottom: -5px;
+  left: 180px;
+  height: 36px;
+  z-index: 1;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+  align-items: center;
+}
+
+.difficulty>* {
+  box-shadow: var(--shadow);
+  height: 40px;
+  margin: 0 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  color: white;
+  line-height: 10px;
+}
+
+
+.illustration {
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 30px black;
+}
+
+.name {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  color: var(--trans-white);
+  text-shadow: 0 0 5px #fff6;
+  font-size: min(1em, calc(140px));
+}
+
+.rks {
+  position: absolute;
+  bottom: -5px;
+  left: 166px;
+  height: 36px;
+  z-index: 1;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+  align-items: center;
+}
+
+.rks>* {
+  box-shadow: var(--shadow);
+  height: 40px;
+  margin: 0 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  color: white;
+  line-height: 10px;
+}
+
+.diff {
+  margin: 0 5px;
+}
+
+.EZ {
+  background-color: #51af44;
+}
+
+.HD {
+  background-color: #3173b3;
+}
+
+.IN {
+  background-color: #be2d23;
+}
+
+.AT {
+  background-color: #383838;
+}
+
+.SP {
+  background-color: #2c3e50;
+}
+
+.illus {
+  width: 200px;
+  height: 105px;
+  background-blend-mode: color;
+  transform: scale(1.19) skew(20deg) !important;
+}
+
+#header-title {
+  padding: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  display: grid;
+  align-items: center;
+  grid-template:
+    "icon name" 37.5px
+    "icon desc" 37.5px
+    / 100px 1fr;
+}
+
+#header-container {
+  margin: 40px 0;
+  display: flex;
+  align-items: center
+}
+
+#header-title>img {
+  grid-area: icon;
+  height: 100%;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 0 0 15px #00d2ff99;
+}
+
+#header-title>span {
+  grid-area: name;
+  text-align: center;
+  font-size: 32px;
+}
+
+#header-title>p {
+  grid-area: desc;
+}
+
+#header-player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#player-name {
+  font-size: 30px;
+  margin: 5px 30px;
+  line-height: 30px;
+  max-width: 300px;
+}
+
+#total-rks {
+  width: 100px;
+  height: 20px;
+  line-height: 20px;
+  background-color: var(--trans-white);
+  text-align: center;
+  color: #000;
+  margin: 5px 0;
+}
+
+#main {
+  width: 2200px;
+  max-height: 2620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('${phi.song.illustration}');
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+
+#main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1620px;
+  backdrop-filter: blur(20px);
+}
+
+#main>* {
+  z-index: 1;
+}
+    `}</style>
+    </head>
+    <div id="main">
+      <div id="header-container" class="parallelogram">
+        <div id="header-title" class="para-decorate no-unskew block shadow">
+          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" />
+          <span>Phigros</span>
+          <p>Ranking Score 成绩图</p>
+        </div>
+        <div id="header-player-info" class="para-decorate no-unskew block">
+          <div id="player-name" class="shadow">{playerName}</div>
+          {/* TODO: rank render */}
+          <div class={`rank rank-${challangeRank} no-unskew`}>
+            <div>{challangeLevel}</div>
+          </div>
+          <div id="total-rks" class="no-unskew">
+            <div>{rks.toFixed(2)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="songs">{renderSong('φ', phi)}</div>
+      <div class="songs">
+        {b19.map((r, i) => renderSong(i + 1, r))}
+      </div>
+    </div>
+  </html>
+}
+
 function renderSong(order: string | number, rks: RKSInfo) {
   // console.log("???")
   // console.log(rks)
@@ -454,7 +834,7 @@ export function renderScore(record: SongRecord, info: SongInfo) {
       background-color: black;
       display: flex;
       justify-content: center;
-      background-image: url('${info.illustration}');
+      background-image: url('${info.illustration_big}');
       background-repeat: no-repeat;
       background-size: cover;
       font-family: 'Saira', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
@@ -594,8 +974,8 @@ export function renderScore(record: SongRecord, info: SongInfo) {
 
     #name {
       position: absolute;
-      top: 236.5px;
-      left: -28px;
+      top: 220.5px;
+      left: 0px;
       font-size: 15px;
       color: #FFFFFFDD;
     }
@@ -603,9 +983,15 @@ export function renderScore(record: SongRecord, info: SongInfo) {
     #artist {
       position: absolute;
       top: 241.5px;
-      right: 150px;
+      right: 100px;
       font-size: 12.5px;
       color: #FFFFFFDD;
+    }
+
+    #score_rank {
+        z-index: 9999;
+        width: 40%;
+        height: auto;
     }
     `}</style>
     </head>
@@ -621,15 +1007,15 @@ export function renderScore(record: SongRecord, info: SongInfo) {
         <div id="level-container" class="no-unskew">
           {record.map(([level, record]) => {
             return <div class="level no-unskew">
-              <div class="difficulty no-unskew">
+              {/* <div class="difficulty no-unskew"> */}
                 <div class={level + ' no-unskew'}>
                   <div class="level-name">{level}</div>
                   <div class="diff">{info.chart[level].level}</div>
                 </div>
-              </div>
+              {/* </div> */}
               <div class="score">{record.score}</div>
               <div class="acc">{record.accuracy.toFixed(2)}%</div>
-              <img src={rankingImage(record)} />
+              <img src={rankingImage(record)} id="score_rank"/>
             </div>
           })}
         </div>
