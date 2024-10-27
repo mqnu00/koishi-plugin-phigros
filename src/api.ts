@@ -131,9 +131,7 @@ export class API {
         tmp[i].composer = '月見静華vsLUNARiUM' 
       } else if (tmp[i].song == 'Shadow') {
         tmp[i].composer = 'SumaiLightvs姜米條' 
-      } else if (tmp[i].song == '月詠に鳴る') {
-        tmp[i].composer = 'Feryquitousfeat藍月なくる'
-      }
+      } 
       if (tmp[i].composer == 'FLuoRiTe姜米條') {
         tmp[i].song = 'NYA'
       } else if (tmp[i].composer == '1112vsStar') {
@@ -142,6 +140,8 @@ export class API {
         tmp[i].song = 'AnotherMe'
       } else if (tmp[i].composer == 'MALVA') {
         tmp[i].song = 'Trane'
+      } else if (tmp[i].song == '祈我ら神祖と共に歩む者なり') {
+        tmp[i].song = '祈-我ら神祖と共に歩む者なり-'
       }
       tmp[i].id = tmp[i].song + '.' + tmp[i].composer
       let tt: SongInfo = {
@@ -263,4 +263,21 @@ export function rks(record: [SongRecord, SongInfo][]): {
   const total = temp.reduce((p, c) => p + c.rks, 0) / temp.length
 
   return { b19, bestPhi, rks: total }
+}
+
+export function rks40(record: [SongRecord, SongInfo][]): {
+  bestPhi: RKSInfo,
+  b40: RKSInfo[],
+  rks: number,
+} {
+  const rks = best(record)
+  const bestPhi = rks
+    .filter(r => r.record.accuracy === 100)
+    .reduce((p, c) => p.rks <= c.rks ? c : p)
+
+  const b40 = rks.slice(0, 40)
+  const temp = [bestPhi, ...b40]
+  const total = temp.reduce((p, c) => p + c.rks, 0) / temp.length
+
+  return { b40, bestPhi, rks: total }
 }
