@@ -1,7 +1,7 @@
-import { Context, Schema, Session, SessionError, deduplicate, h } from 'koishi'
-import { API, tokenPattern, rks } from './api'
+import { Context, Logger, Schema, Session, SessionError, deduplicate, h } from 'koishi'
+import { API, tokenPattern, rks, rks40 } from './api'
 import { SongInfo } from './types'
-import { renderB19, renderScore } from './renderer'
+import { renderB19, renderB40, renderScore } from './renderer'
 
 declare module 'koishi' {
   interface User {
@@ -21,7 +21,7 @@ export interface Config {
   shortcut: boolean
 }
 
-export const name = 'test'
+export const name = 'phigros'
 export const using = ['database', 'puppeteer']
 export const Config: Schema<Config> = Schema.object({
   shortcut: Schema.boolean().default(true).description('是否允许通过 shortcut 触发指令')
@@ -91,15 +91,15 @@ export function apply(ctx: Context, config: Config) {
 
   const unbind = ctx.command('phigros/unbind')
     .userFields(['phiToken'])
-    .action(({ session }) => {
+    .action(async ({ session }) => {
       if (!session.user.phiToken) return session.text('.no-token')
-      session.user.phiToken = undefined
+      session.user.phiToken = null
       return session.text('.success')
     })
 
   const bind = ctx.command('phigros/bind <token:string>', { checkArgCount: true })
     .userFields(['phiToken'])
-    .action(({ session }, token) => {
+    .action(async ({ session }, token) => {
       if (!tokenPattern.exec(token)) return session.text('.invalid')
       session.user.phiToken = token
       return session.text('.success')
@@ -157,18 +157,10 @@ export function apply(ctx: Context, config: Config) {
 
       const rksInfo = rks(save.map(r => {
         const a = songs.find(s => s.id === r[0])
-        // if (r[0] == 'PRAW.Bluewind') {
-        //   for (let i = 0; i < songs.length; i++) {
-        //     console.log(songs[i].id)
-        //     if (songs[i].id == 'PRAW.Bluewind') {
-        //       console.log(songs[i])
-        //     }
-        //   }
-        // }
         
         if (a == undefined) {
-          console.log('wrong')
-          console.log(r[0])
+          let log = new Logger('phigros-redo')
+          log.error(`wrong unsolve song\n${r[0]}`)
         } 
         return [r[1], a]
       }))
@@ -185,6 +177,41 @@ export function apply(ctx: Context, config: Config) {
       )
     })
 
+    const b40 = ctx.command('phigros/b40')
+    .userFields(['phiToken'])
+    .action(async ({ session }) => {
+      if (!session.user.phiToken) return session.text('.no-token')
+
+      const save = await api.record(session.user.phiToken)
+      // for (let i = 0; i < save.length; i++) {
+      //   console.log(save[i])
+      // }
+      const { challengeMode } = await api.summary(session.user.phiToken)
+
+      const songs = await api.songsInfo()
+
+      const rksInfo = rks40(save.map(r => {
+        const a = songs.find(s => s.id === r[0])
+        
+        if (a == undefined) {
+          let log = new Logger('phigros-redo')
+          log.error(`wrong unsolve song\n${r[0]}`)
+        } 
+        return [r[1], a]
+      }))
+
+      const playerName = await api.nickname(session.user.phiToken)
+
+      await session.send(session.text('.rendering'))
+      return renderB40(
+        playerName,
+        rksInfo.rks,
+        rksInfo.bestPhi,
+        rksInfo.b40,
+        challengeMode.rank, challengeMode.level
+      )
+    })
+
   if (config.shortcut) {
     unbind.shortcut('unbind', { i18n: true })
     bind.shortcut('bind', { i18n: true, fuzzy: true })
@@ -192,5 +219,6 @@ export function apply(ctx: Context, config: Config) {
     listAlias.shortcut('list-alias', { i18n: true, fuzzy: true })
     score.shortcut('score', { i18n: true, fuzzy: true })
     b19.shortcut('b19', { i18n: true })
+    b40.shortcut('b40', { i18n: true })
   }
 }
