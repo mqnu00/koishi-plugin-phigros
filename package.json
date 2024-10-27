@@ -10,7 +10,7 @@
     "url": "https://github.com/mqnu00/koishi-plugin-phigros"
   },
   "homepage": "https://github.com/mqnu00/koishi-plugin-phigros",
-  "version": "2.0.11",
+  "version": "2.0.13",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "author": {
@@ -44,7 +44,7 @@
   "koishi": {
     "description": {
       "en": "Koishi plugin for everything Phigros!",
-      "zh": "phigros b19！根据koishi-plugin-phigros修改，拉取另一个songs.json来源，修改token来源说明"
+      "zh": "phigros b19！根据koishi-plugin-phigros修改，拉取另一个songs.json来源，新增b40"
     },
     "service": {
       "required": [
@@ -52,5 +52,8 @@
         "puppeteer"
       ]
     }
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
