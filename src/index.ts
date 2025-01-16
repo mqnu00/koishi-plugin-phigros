@@ -19,16 +19,18 @@ declare module 'koishi' {
 
 export interface Config {
   shortcut: boolean
+  githubProxy: string
 }
 
 export const name = 'phigros'
 export const using = ['database', 'puppeteer']
 export const Config: Schema<Config> = Schema.object({
-  shortcut: Schema.boolean().default(true).description('是否允许通过 shortcut 触发指令')
+  shortcut: Schema.boolean().default(true).description('是否允许通过 shortcut 触发指令'),
+  githubProxy: Schema.string().role('githubProxy').default('https://ghfast.top/').description('为空表示不使用github代理')
 })
 
 export function apply(ctx: Context, config: Config) {
-  const api = new API(ctx)
+  const api = new API(ctx, config)
   const querySong = async (alias: string, session: Session): Promise<SongInfo> => {
     const matchs = await ctx.database.get('phigros_alias_v3', { alias: { $regex: alias.toLowerCase() } })
       .then(a => deduplicate(a.map(a => a.songId)))

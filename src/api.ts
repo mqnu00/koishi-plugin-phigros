@@ -4,6 +4,7 @@ import { fromBuffer, Entry } from 'yauzl'
 import type { Quester, Context } from 'koishi'
 import * as fs from 'fs'
 import { join } from 'path'
+import { Config } from '.'
 
 const levels = {
   EZ: 1 << 0,
@@ -23,7 +24,8 @@ const iv = Uint8Array.from([42, 79, -16, -118, -56, 13, 99, 7, 0, 87, -59, -107,
 export const tokenPattern = /[a-z0-9]{25}/
 export class API {
   http: Quester
-  constructor(ctx: Context) {
+  githubProxy?: string
+  constructor(ctx: Context, config: Config) {
     this.http = ctx.http.extend({
       headers: {
         'X-LC-Id': 'rAK3FfdieFob2Nn8Am',
@@ -31,6 +33,7 @@ export class API {
         'User-Agent': 'LeanCloud-CSharp-SDK/1.0.3',
       }
     })
+    this.githubProxy = config.githubProxy
   }
 
   save(token: string): Promise<Save> {
@@ -113,8 +116,11 @@ export class API {
   }
 
   async songsInfo(): Promise<SongInfo[]> {
-    let tmp = await this.http.get('https://ghp.ci/https://raw.githubusercontent.com/ssmzhn/Phigros/refs/heads/main/Phigros.json')
-    tmp = JSON.parse(tmp)
+    let url = 'https://raw.githubusercontent.com/ssmzhn/Phigros/refs/heads/main/Phigros.json'
+    if (this.githubProxy || this.githubProxy != "") {
+      url = this.githubProxy + url
+    }
+    let tmp = await this.http.get(url)
     tmp =  Object.keys(tmp).map(key => {
       return { songName: key, ...tmp[key] };
   });
