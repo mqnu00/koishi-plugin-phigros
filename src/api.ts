@@ -115,16 +115,16 @@ export class API {
     return nickname
   }
 
-  async songsInfo(ctx: Context): Promise<SongInfo[]> {
+  async songsInfo(ctx?: Context): Promise<SongInfo[]> {
     if (ctx) {
-      let [updateTime] = await ctx.database.get('phigros_update', 'time')
-      let now = Date.now()
-      if (updateTime && now - updateTime.time < 24 * 60 * 60 * 1000) {
-        // 如果更新过且未超过24小时，则直接读取本地文件
-        return 
-      } else {
-        return 
-      }
+      // let [updateTime] = await ctx.database.get('phigros_update', 'time')
+      // let now = Date.now()
+      // if (updateTime && now - updateTime.time < 24 * 60 * 60 * 1000) {
+      //   // 如果更新过且未超过24小时，则直接读取本地文件
+      //   return 
+      // } else {
+      //   return 
+      // }
     }
     let url = 'https://raw.githubusercontent.com/ssmzhn/Phigros/refs/heads/main/Phigros.json'
     if (this.githubProxy || this.githubProxy != "") {
@@ -139,8 +139,6 @@ export class API {
     } else {
       throw new Error('请求歌曲列表失败，请求结果不是String类型，提一下issue谢谢喵~')
     }
-
-    console.log(tmp[0])
     
     let res: SongInfo[] = []
     console.log(tmp.length)
