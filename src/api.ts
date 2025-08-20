@@ -97,9 +97,9 @@ export class API {
   async record(token: string) {
     const save = await this.save(token)
 
-    const buf = await this.http.get<Uint8Array>(save.results[0].gameFile.url, {
+    const buf = await this.http.get<ArrayBuffer>(save.results[0].gameFile.url, {
       responseType: 'arraybuffer'
-    })
+    })  
 
     return Array.from(parse(await decrypt(buf)))
   }
