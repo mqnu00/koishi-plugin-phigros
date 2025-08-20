@@ -69,12 +69,15 @@ export function apply(ctx: Context, config: Config) {
   })
 
   ctx.database.extend('phigros_alias_v3', {
-    id: 'unsigned',
+    id: 'integer',
     alias: 'string',
     songId: {
       nullable: false,
       type: 'string',
     },
+  }, {
+    primary: 'id',
+    autoInc: true,
   })
 
   ctx.on('ready', async () => {
