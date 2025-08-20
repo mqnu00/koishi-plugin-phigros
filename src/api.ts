@@ -1,7 +1,7 @@
 import type { SongRecord, LevelRecord, SongInfo, RKSInfo, Save, SaveSummary } from './types'
 import { createDecipheriv } from 'crypto'
 import { fromBuffer, Entry } from 'yauzl'
-import type { Quester, Context } from 'koishi'
+import { Quester, Context } from 'koishi'
 import * as fs from 'fs'
 import { join } from 'path'
 import { Config } from '.'
@@ -115,15 +115,33 @@ export class API {
     return nickname
   }
 
-  async songsInfo(): Promise<SongInfo[]> {
+  async songsInfo(ctx: Context): Promise<SongInfo[]> {
+    if (ctx) {
+      let [updateTime] = await ctx.database.get('phigros_update', 'time')
+      let now = Date.now()
+      if (updateTime && now - updateTime.time < 24 * 60 * 60 * 1000) {
+        // 如果更新过且未超过24小时，则直接读取本地文件
+        return 
+      } else {
+        return 
+      }
+    }
     let url = 'https://raw.githubusercontent.com/ssmzhn/Phigros/refs/heads/main/Phigros.json'
     if (this.githubProxy || this.githubProxy != "") {
       url = this.githubProxy + url
     }
     let tmp = await this.http.get(url)
-    tmp =  Object.keys(tmp).map(key => {
-      return { songName: key, ...tmp[key] };
-  });
+    if (typeof tmp === 'string') {
+      tmp = JSON.parse(tmp)
+      tmp =  Object.keys(tmp).map(key => {
+        return { songName: key, ...tmp[key] };
+      });
+    } else {
+      throw new Error('请求歌曲列表失败，请求结果不是String类型，提一下issue谢谢喵~')
+    }
+
+    console.log(tmp[0])
+    
     let res: SongInfo[] = []
     console.log(tmp.length)
     for (let i = 0; i < tmp.length; i++) {
