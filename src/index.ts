@@ -1,7 +1,7 @@
 import { Context, Logger, Schema, Session, SessionError, deduplicate, h } from 'koishi'
-import { API, tokenPattern, rks, rks40 } from './api'
+import { API, tokenPattern, rks, rks27 } from './api'
 import { SongInfo } from './types'
-import { renderB19, renderB40, renderScore } from './renderer'
+import { renderB19, renderB27, renderScore } from './renderer'
 
 declare module 'koishi' {
   interface User {
@@ -182,7 +182,7 @@ export function apply(ctx: Context, config: Config) {
       )
     })
 
-    const b40 = ctx.command('phigros/b40')
+    const b27 = ctx.command('phigros/b27')
     .userFields(['phiToken'])
     .action(async ({ session }) => {
       if (!session.user.phiToken) return session.text('.no-token')
@@ -195,7 +195,7 @@ export function apply(ctx: Context, config: Config) {
 
       const songs = await api.songsInfo()
 
-      const rksInfo = rks40(save.map(r => {
+      const rksInfo = rks27(save.map(r => {
         const a = songs.find(s => s.id === r[0])
         
         if (a == undefined) {
@@ -208,11 +208,11 @@ export function apply(ctx: Context, config: Config) {
       const playerName = await api.nickname(session.user.phiToken)
 
       await session.send(session.text('.rendering'))
-      return renderB40(
+      return renderB27(
         playerName,
         rksInfo.rks,
-        rksInfo.bestPhi,
-        rksInfo.b40,
+        rksInfo.topThreePhi,
+        rksInfo.b27,
         challengeMode.rank, challengeMode.level
       )
     })
@@ -224,6 +224,6 @@ export function apply(ctx: Context, config: Config) {
     listAlias.shortcut('list-alias', { i18n: true, fuzzy: true })
     score.shortcut('score', { i18n: true, fuzzy: true })
     b19.shortcut('b19', { i18n: true })
-    b40.shortcut('b40', { i18n: true })
+    b27.shortcut('b27', { i18n: true })
   }
 }

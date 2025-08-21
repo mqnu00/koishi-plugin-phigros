@@ -392,11 +392,11 @@ body {
   </html>
 }
 
-export function renderB40(
+export function renderB27(
   playerName: string,
   rks: number,
-  phi: RKSInfo,
-  b19: RKSInfo[],
+  phi: RKSInfo[],
+  b27: RKSInfo[],
   challangeRank: string,
   challangeLevel: number,
 ) {
@@ -723,7 +723,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('${phi.song.illustration}');
+  background-image: url('${phi[0].song.illustration}');
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 0;
@@ -764,9 +764,11 @@ body {
           </div>
         </div>
       </div>
-      <div class="songs">{renderSong('φ', phi)}</div>
       <div class="songs">
-        {b19.map((r, i) => renderSong(i + 1, r))}
+        {phi.map((r, i) => renderSong(i + 1, r))}
+      </div>
+      <div class="songs">
+        {b27.map((r, i) => renderSong(i + 1, r))}
       </div>
     </div>
   </html>
@@ -795,7 +797,7 @@ function renderSong(order: string | number, rks: RKSInfo) {
 
     <div class="block record no-unskew">
 
-      <img class="ranking" src={rankingImage(rks.record)} />
+      {/* <img class="ranking" src={rankingImage(rks.record)} /> */}
       <div class="score no-unskew">
         <div>{rks.record.score}</div>
       </div>
