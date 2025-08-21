@@ -392,11 +392,11 @@ body {
   </html>
 }
 
-export function renderB40(
+export function renderB27(
   playerName: string,
   rks: number,
-  phi: RKSInfo,
-  b19: RKSInfo[],
+  phi: RKSInfo[],
+  b27: RKSInfo[],
   challangeRank: string,
   challangeLevel: number,
 ) {
@@ -424,6 +424,15 @@ body {
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
+}
+
+.phi-songs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .block {
@@ -718,12 +727,12 @@ body {
 }
 
 #main {
-  width: 2200px;
-  max-height: 2620px;
+  width: 1080px;
+  height: 1920px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('${phi.song.illustration}');
+  background-image: url('${phi[0].song.illustration}');
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 0;
@@ -764,9 +773,11 @@ body {
           </div>
         </div>
       </div>
-      <div class="songs">{renderSong('φ', phi)}</div>
+      <div class="phi-songs">
+        {phi.map((r, i) => renderSong(i + 1, r))}
+      </div>
       <div class="songs">
-        {b19.map((r, i) => renderSong(i + 1, r))}
+        {b27.map((r, i) => renderSong(i + 1, r))}
       </div>
     </div>
   </html>

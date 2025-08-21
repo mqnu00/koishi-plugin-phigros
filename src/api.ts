@@ -287,19 +287,20 @@ export function rks(record: [SongRecord, SongInfo][]): {
   return { b19, bestPhi, rks: total }
 }
 
-export function rks40(record: [SongRecord, SongInfo][]): {
-  bestPhi: RKSInfo,
-  b40: RKSInfo[],
+export function rks27(record: [SongRecord, SongInfo][]): {
+  topThreePhi: RKSInfo[],
+  b27: RKSInfo[],
   rks: number,
 } {
   const rks = best(record)
-  const bestPhi = rks
-    .filter(r => r.record.accuracy === 100)
-    .reduce((p, c) => p.rks <= c.rks ? c : p)
+  const topThreePhi = rks
+    .filter(r => r.record.accuracy === 100) // 筛选准确度为 100 的项
+    .sort((a, b) => b.rks - a.rks) // 按 rks 值降序排序
+    .slice(0, 3); // 提取前 3 个
 
-  const b40 = rks.slice(0, 40)
-  const temp = [bestPhi, ...b40]
+  const b27 = rks.slice(0, 27)
+  const temp = [...topThreePhi, ...b27]
   const total = temp.reduce((p, c) => p + c.rks, 0) / temp.length
 
-  return { b40, bestPhi, rks: total }
+  return { b27, topThreePhi, rks: total }
 }
