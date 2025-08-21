@@ -426,6 +426,15 @@ body {
   justify-content: center;
 }
 
+.phi-songs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 .block {
   color: var(--trans-white);
   background-color: var(--trans-black);
@@ -718,8 +727,8 @@ body {
 }
 
 #main {
-  width: 2200px;
-  max-height: 2620px;
+  width: 1080px;
+  height: 1920px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -764,7 +773,7 @@ body {
           </div>
         </div>
       </div>
-      <div class="songs">
+      <div class="phi-songs">
         {phi.map((r, i) => renderSong(i + 1, r))}
       </div>
       <div class="songs">
@@ -797,7 +806,7 @@ function renderSong(order: string | number, rks: RKSInfo) {
 
     <div class="block record no-unskew">
 
-      {/* <img class="ranking" src={rankingImage(rks.record)} /> */}
+      <img class="ranking" src={rankingImage(rks.record)} />
       <div class="score no-unskew">
         <div>{rks.record.score}</div>
       </div>
