@@ -1,7 +1,7 @@
 # koishi-plugin-phigros-redo
 
-[![downloads](https://img.shields.io/npm/dm/koishi-plugin-phigros-redo?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-phigros)
-[![npm](https://img.shields.io/npm/v/koishi-plugin-phigros-redo?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-phigros)
+[![downloads](https://img.shields.io/npm/dm/koishi-plugin-phigros-redo?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-phigros-redo)
+[![npm](https://img.shields.io/npm/v/koishi-plugin-phigros-redo?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-phigros-redo)
 
 Koishi plugin for everything Phigros!
 
