@@ -737,7 +737,7 @@ body {
   background-size: cover;
   z-index: 0;
   overflow: hidden;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 }
 
 #main::before {
