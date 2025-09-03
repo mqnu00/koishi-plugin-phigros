@@ -284,10 +284,11 @@ body {
   font-weight: bold;
   display: grid;
   align-items: center;
-  grid-template:
-    "icon name" 37.5px
-    "icon desc" 37.5px
-    / 100px 1fr;
+  grid-template-areas:
+    "icon name"
+    "icon desc";
+  grid-template-rows: 37.5px 37.5px;
+  grid-template-columns: 100px 1fr;
 }
 
 #header-container {
@@ -369,7 +370,16 @@ body {
     <div id="main">
       <div id="header-container" class="parallelogram">
         <div id="header-title" class="para-decorate no-unskew block shadow">
-          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" />
+          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" style={{
+            transform: 'skew(20deg)',
+            gridArea: 'icon' ,
+            gridRow: '1 / 3 ',
+            maxWidth: '100px' ,
+            maxHeight: '75px' ,
+            margin: 'auto' ,
+            borderRadius: '20px' ,
+            boxShadow: '0 0 15px #00d2ff99' ,
+          }}/>
           <span>Phigros</span>
           <p>Ranking Score 成绩图</p>
         </div>
@@ -758,7 +768,16 @@ body {
     <div id="main">
       <div id="header-container" class="parallelogram">
         <div id="header-title" class="para-decorate no-unskew block shadow">
-          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" />
+          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" style={{
+            transform: 'skew(20deg)',
+            gridArea: 'icon' ,
+            gridRow: '1 / 3 ',
+            maxWidth: '100px' ,
+            maxHeight: '75px' ,
+            margin: 'auto' ,
+            borderRadius: '20px' ,
+            boxShadow: '0 0 15px #00d2ff99' ,
+          }}/>
           <span>Phigros</span>
           <p>Ranking Score 成绩图</p>
         </div>
