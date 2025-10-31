@@ -79,4 +79,4 @@ commands:
       rendering: 正在渲染成绩图中
       no-token: 尚未记录 SessionToken，请先使用 bind 指令
     shortcuts:
-      b19: b40
+      b27: b27
