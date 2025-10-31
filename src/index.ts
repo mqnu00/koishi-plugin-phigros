@@ -10,7 +10,7 @@ declare module 'koishi' {
 
   interface Tables {
     phigros_alias_v3: {
-      id: number
+      id?: number
       alias: string
       songId: string
     }
@@ -53,10 +53,10 @@ export function apply(ctx: Context, config: Config) {
   }
 
   const setAilas = async (alias: string, songId: string) => {
-    const query1 = {alias: alias.toLowerCase(), songId }
+    const query1 = { alias: alias.toLowerCase(), songId }
     const [exist] = await ctx.database.get('phigros_alias_v3', query1)
-    const query2 = {id:null, alias: alias.toLowerCase(), songId }
-    if (!exist) await ctx.database.create('phigros_alias_v3', query2)
+    const data = { alias: alias.toLowerCase(), songId }
+    if (!exist) await ctx.database.create('phigros_alias_v3', data)
   }
 
   ctx.i18n.define('zh', require('./locales/zh-CN'))
