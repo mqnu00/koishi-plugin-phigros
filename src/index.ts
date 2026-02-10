@@ -56,7 +56,15 @@ export function apply(ctx: Context, config: Config) {
     const query1 = {alias: alias.toLowerCase(), songId }
     const [exist] = await ctx.database.get('phigros_alias_v3', query1)
     const query2 = {id:null, alias: alias.toLowerCase(), songId }
-    if (!exist) await ctx.database.create('phigros_alias_v3', query2)
+    if (!exist) {
+      try {
+        await ctx.database.create('phigros_alias_v3', query2)
+      } catch (e) {
+        // mysql8.2 报错id cannot be null
+        const tmpTestForMysql8 = {alias: alias.toLowerCase(), songId }
+        await ctx.database.create('phigros_alias_v3', tmpTestForMysql8)
+      }
+    }
   }
 
   ctx.i18n.define('zh', require('./locales/zh-CN'))

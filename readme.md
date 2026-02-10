@@ -33,3 +33,5 @@ v2.1.0: 增加b27功能
 v2.1.1: b27 图片底部成绩显示修复
 
 v2.1.2: css样式不生效导致标题图片渲染错位
+
+v2.1.3: mysql8.2 使用别名功能报错 没有这个问题可以不更新 关联issue[#13](https://github.com/mqnu00/koishi-plugin-phigros/issues/13)
