@@ -10,7 +10,7 @@
     "url": "https://github.com/mqnu00/koishi-plugin-phigros"
   },
   "homepage": "https://github.com/mqnu00/koishi-plugin-phigros",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "author": {
@@ -35,11 +35,11 @@
     "yauzl": "^2.10.0"
   },
   "peerDependencies": {
-    "koishi": "^4.13.1"
+    "koishi": "^4.18.9"
   },
   "devDependencies": {
-    "@types/yauzl": "^2.10.0",
-    "koishi-plugin-puppeteer": "^3.5.0"
+    "@types/yauzl": "^2.10.3",
+    "koishi-plugin-puppeteer": "^3.9.0"
   },
   "koishi": {
     "description": {
