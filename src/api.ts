@@ -126,58 +126,31 @@ export class API {
       //   return 
       // }
     }
-    let url = 'https://raw.githubusercontent.com/ssmzhn/Phigros/refs/heads/main/Phigros.json'
-    if (this.githubProxy || this.githubProxy != "") {
-      url = this.githubProxy + url
-    }
-    let tmp = await this.http.get(url)
-    if (typeof tmp === 'string') {
-      tmp = JSON.parse(tmp)
-      tmp =  Object.keys(tmp).map(key => {
-        return { songName: key, ...tmp[key] };
-      });
-    } else {
-      throw new Error('请求歌曲列表失败，请求结果不是String类型，提一下issue谢谢喵~')
-    }
-    
+
     let res: SongInfo[] = []
-    console.log(tmp.length)
-    for (let i = 0; i < tmp.length; i++) {
-      tmp[i].song = tmp[i].song.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFFa-zA-Z0-9\u3040-\u309F\u30A0-\u30FF]/g, "");
-      tmp[i].composer = tmp[i].composer.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFFa-zA-Z0-9\u3040-\u309F\u30A0-\u30FF]/g, "");
-      if (tmp[i].song == 'PRAW') {
-        tmp[i].composer = 'Bluewind'
-      } else if (tmp[i].song == 'NextTime') {
-        tmp[i].composer = 'SaMZIng' 
-      } else if (tmp[i].song == '月下缭乱') {
-        tmp[i].composer = '月見静華vsLUNARiUM' 
-      } else if (tmp[i].song == 'Shadow') {
-        tmp[i].composer = 'SumaiLightvs姜米條' 
-      } 
-      if (tmp[i].composer == 'FLuoRiTe姜米條') {
-        tmp[i].song = 'NYA'
-      } else if (tmp[i].composer == '1112vsStar') {
-        tmp[i].song = 'Poseidon'
-      } else if (tmp[i].composer == 'NeutralMoon') {
-        tmp[i].song = 'AnotherMe'
-      } else if (tmp[i].composer == 'MALVA') {
-        tmp[i].song = 'Trane'
-      } else if (tmp[i].song == '祈我ら神祖と共に歩む者なり') {
-        tmp[i].song = '祈-我ら神祖と共に歩む者なり-'
+
+    let difficultyUrl = (this.githubProxy || '') + "https://raw.githubusercontent.com/7aGiven/Phigros_Resource/refs/heads/info/difficulty.tsv"
+    const difficultyResponse = await this.http.get(difficultyUrl)
+    const difficultyLines = (difficultyResponse as string).trim().split('\n')
+    difficultyLines.forEach((item) => {
+      let info = item.split('\t')
+      let songInfo: Partial<SongInfo> = {}
+      const [song, composer] = info[0].split('.')
+      const difficulty = ['EZ', 'HD', 'IN', 'AT']
+      songInfo.id = info[0]
+      songInfo.song = song
+      songInfo.composer = composer
+      songInfo.chart = {}
+      for (let i = 1; i < info.length; i++) {
+        songInfo.chart[difficulty[i-1]] = {
+          level: Number(info[i].split('.')[0]),
+          difficulty: Number(info[i])
+        }
       }
-      tmp[i].id = tmp[i].song + '.' + tmp[i].composer
-      let tt: SongInfo = {
-        id: tmp[i].id,
-        song: tmp[i].song,
-        composer: tmp[i].composer,
-        chart: tmp[i].chart,
-        illustration: tmp[i].illustration,
-        illustrator: tmp[i].illustrator,
-        illustration_big: tmp[i].illustration_big
-      };
-      res.push(tt)
-      // console.log(tt.id)
-    }
+      songInfo.illustration = (this.githubProxy || '') + `https://raw.githubusercontent.com/7aGiven/Phigros_Resource/refs/heads/illustrationBlur/${songInfo.id}.png`
+      songInfo.illustration_big = (this.githubProxy || '') + `https://raw.githubusercontent.com/7aGiven/Phigros_Resource/refs/heads/illustration/${songInfo.id}.png`
+      res.push(songInfo as SongInfo)
+    })
     return res
   }
 }

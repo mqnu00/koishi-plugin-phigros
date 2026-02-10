@@ -9,8 +9,8 @@ export interface LevelRecord {
 export interface Chart {
   level: number
   difficulty: number
-  combo: number
-  charter: string
+  combo?: number
+  charter?: string
 }
 
 export interface SongInfo {
