@@ -596,6 +596,23 @@ body {
   line-height: 10px;
 }
 
+.avg-acc {
+  color: var(--trans-white);
+  background: var(--trans-black);
+  position: absolute;
+  left: 30px;
+  top: -15px;
+  height: 15px;
+  width: 200px;
+  line-height: 7px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  padding-left: 10px;
+  white-space: pre;
+}
+
 
 .illustration {
   overflow: hidden;
@@ -785,10 +802,12 @@ body {
 }
 
 function renderSong(order: string | number, rks: RKSInfo) {
-  // console.log("???")
-  // console.log(rks)
-  // console.log(rks.song.chart[rks.level].difficulty)
   return <div class="song parallelogram">
+
+    {rks.record.avgAcc && <div class="avg-acc">
+      AVG: {rks.record.avgAcc.toFixed(2)}%
+    </div>}
+
     <div class="order no-unskew">
       <div>{order}</div>
     </div>

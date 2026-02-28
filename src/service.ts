@@ -2,7 +2,7 @@ import { mkdir } from 'fs/promises';
 import { Service, Context, h } from 'koishi';
 import { resolve } from 'path';
 import { Config } from './index';
-import { API, rks, rks27 } from './api';
+import { API, PhiB19API, rks, rks27 } from './api';
 import { SongInfo, SongRecord, LevelRecord } from './types';
 import { renderB19, renderB27 } from './renderer';
 import koaSend from 'koa-send';
@@ -12,12 +12,14 @@ export class PhigrosService extends Service {
   static inject = ['database', 'puppeteer', 'server'];
   declare config: Config;
   api: API;
+  phiB19API: PhiB19API
   assetPrefix: string;
 
   constructor(ctx: Context, config: Config) {
     super(ctx, 'phigros', true);
     this.config = config;
     this.api = new API(ctx, config);
+    this.phiB19API = new PhiB19API(ctx);
 
     // 生成资源前缀，dev 模式下使用固定前缀
     const N = 10;
@@ -62,6 +64,18 @@ export class PhigrosService extends Service {
         const mockRks = rksData.rks;
         const mockChallengeRank = 'rainbow';
         const mockChallengeLevel = 15;
+        
+        // 获取 avg accuracy 数据
+        const songIds = [...new Set([...rksData.b27.map(r => r.song.id), ...rksData.topThreePhi.map(r => r.song.id)])];
+        const PhiB19SongIds = songIds.map(id => id + '.0');
+        const songsAvgAcc = await this.phiB19API.allAccAvg(PhiB19SongIds, mockRks - 0.05, mockRks + 0.05);
+
+        rksData.b27.forEach(rksInfo => {
+          rksInfo.record.avgAcc = songsAvgAcc[rksInfo.song.id]?.[rksInfo.level]?.accAvg
+        })
+        rksData.topThreePhi.forEach(rksInfo => {
+          rksInfo.record.avgAcc = songsAvgAcc[rksInfo.song.id]?.[rksInfo.level]?.accAvg
+        })
 
         // 渲染 HTML
         const vnode = renderB27(
