@@ -35,7 +35,9 @@ export const Config: Schema<Config> = Schema.object({
 
 export function apply(ctx: Context, config: Config) {
   const api = new API(ctx, config)
-  ctx.plugin(PhigrosService, config)
+  if (config.dev) {
+    ctx.plugin(PhigrosService, config)
+  }
 
   const querySong = async (alias: string, session: Session): Promise<SongInfo> => {
     const matchs = await ctx.database.get('phigros_alias_v3', { alias: { $regex: alias.toLowerCase() } })
