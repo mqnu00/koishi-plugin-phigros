@@ -2,6 +2,8 @@ import { Context, Logger, Schema, Session, SessionError, deduplicate, h } from '
 import { API, tokenPattern, rks, rks27 } from './api'
 import { SongInfo } from './types'
 import { renderB19, renderB27, renderScore } from './renderer'
+import { PhigrosService } from './service'
+import type { } from '@koishijs/plugin-server'
 
 declare module 'koishi' {
   interface User {
@@ -20,17 +22,21 @@ declare module 'koishi' {
 export interface Config {
   shortcut: boolean
   githubProxy: string
+  dev: boolean
 }
 
 export const name = 'phigros'
-export const using = ['database', 'puppeteer']
+export const using = ['database', 'puppeteer', 'server']
 export const Config: Schema<Config> = Schema.object({
   shortcut: Schema.boolean().default(true).description('是否允许通过 shortcut 触发指令'),
-  githubProxy: Schema.string().role('githubProxy').default('https://ghfast.top/').description('为空表示不使用github代理')
+  githubProxy: Schema.string().role('githubProxy').default('https://ghfast.top/').description('为空表示不使用 github 代理'),
+  dev: Schema.boolean().default(false).description('开发模式，开启后可通过浏览器预览 b27/b19 渲染结果')
 })
 
 export function apply(ctx: Context, config: Config) {
   const api = new API(ctx, config)
+  ctx.plugin(PhigrosService, config)
+
   const querySong = async (alias: string, session: Session): Promise<SongInfo> => {
     const matchs = await ctx.database.get('phigros_alias_v3', { alias: { $regex: alias.toLowerCase() } })
       .then(a => deduplicate(a.map(a => a.songId)))
@@ -170,11 +176,11 @@ export function apply(ctx: Context, config: Config) {
 
       const rksInfo = rks(save.map(r => {
         const a = songs.find(s => s.id === r[0])
-        
+
         if (a == undefined) {
           let log = new Logger('phigros-redo')
           log.error(`wrong unsolve song\n${r[0]}`)
-        } 
+        }
         return [r[1], a]
       }))
 
@@ -205,11 +211,11 @@ export function apply(ctx: Context, config: Config) {
 
       const rksInfo = rks27(save.map(r => {
         const a = songs.find(s => s.id === r[0])
-        
+
         if (a == undefined) {
           let log = new Logger('phigros-redo')
           log.error(`wrong unsolve song\n${r[0]}`)
-        } 
+        }
         return [r[1], a]
       }))
 
