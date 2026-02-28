@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-phigros-redo",
-  "description": "根据koishi-plugin-phigros修改，拉取另一个songs.json来源，针对一些歌曲曲名和作曲者的名字做了修改",
+  "description": "根据 koishi-plugin-phigros 修改",
   "contributors": [
     "seidko <seidko.coding@gmail.com>",
     "mqnu00 <647983952@qq.com>"
@@ -10,7 +10,7 @@
     "url": "https://github.com/mqnu00/koishi-plugin-phigros"
   },
   "homepage": "https://github.com/mqnu00/koishi-plugin-phigros",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "author": {
@@ -32,24 +32,27 @@
   ],
   "dependencies": {
     "@satorijs/element": "3.1.7",
+    "koa-send": "^5.0.1",
     "yauzl": "^2.10.0"
   },
   "peerDependencies": {
     "koishi": "^4.18.9"
   },
   "devDependencies": {
+    "@koishijs/plugin-server": "^1.4.0",
     "@types/yauzl": "^2.10.3",
     "koishi-plugin-puppeteer": "^3.9.0"
   },
   "koishi": {
     "description": {
       "en": "Koishi plugin for everything Phigros!",
-      "zh": "phigros b27！根据koishi-plugin-phigros修改，迁移谱面来源"
+      "zh": "phigros b27！根据 koishi-plugin-phigros 修改，迁移谱面来源"
     },
     "service": {
       "required": [
         "database",
-        "puppeteer"
+        "puppeteer",
+        "server"
       ]
     }
   },
