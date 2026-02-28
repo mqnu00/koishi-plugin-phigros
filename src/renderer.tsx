@@ -194,6 +194,23 @@ body {
   align-items: center;
 }
 
+.avg-acc {
+  color: var(--trans-white);
+  background: var(--trans-black);
+  position: absolute;
+  left: 30px;
+  top: -15px;
+  height: 15px;
+  width: 200px;
+  line-height: 7px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  padding-left: 10px;
+  white-space: pre;
+}
+
 .difficulty>* {
   box-shadow: var(--shadow);
   height: 40px;

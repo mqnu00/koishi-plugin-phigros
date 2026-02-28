@@ -1,5 +1,5 @@
 import { Context, Logger, Schema, Session, SessionError, deduplicate, h } from 'koishi'
-import { API, tokenPattern, rks, rks27 } from './api'
+import { API, tokenPattern, rks, rks27, PhiB19API } from './api'
 import { SongInfo } from './types'
 import { renderB19, renderB27, renderScore } from './renderer'
 import { PhigrosService } from './service'
@@ -23,6 +23,7 @@ export interface Config {
   shortcut: boolean
   githubProxy: string
   dev: boolean
+  phiB19Top: boolean
 }
 
 export const name = 'phigros'
@@ -30,13 +31,18 @@ export const using = ['database', 'puppeteer', 'server']
 export const Config: Schema<Config> = Schema.object({
   shortcut: Schema.boolean().default(true).description('是否允许通过 shortcut 触发指令'),
   githubProxy: Schema.string().role('githubProxy').default('https://ghfast.top/').description('为空表示不使用 github 代理'),
+  phiB19Top: Schema.boolean().default(true).description('是否使用 phib19.top 的API 增强成绩分析'),
   dev: Schema.boolean().default(false).description('开发模式，开启后可通过浏览器预览 b27/b19 渲染结果')
 })
 
 export function apply(ctx: Context, config: Config) {
   const api = new API(ctx, config)
+  let phib19Api: PhiB19API | null = null
   if (config.dev) {
     ctx.plugin(PhigrosService, config)
+  }
+  if (config.phiB19Top) {
+    phib19Api = new PhiB19API(ctx)
   }
 
   const querySong = async (alias: string, session: Session): Promise<SongInfo> => {
@@ -188,6 +194,19 @@ export function apply(ctx: Context, config: Config) {
 
       const playerName = await api.nickname(session.user.phiToken)
 
+      if (config.phiB19Top) {
+        // 获取 avg accuracy 数据
+        const songIds = [...new Set([...rksInfo.b19.map(r => r.song.id), rksInfo.bestPhi.song.id])];
+        const PhiB19SongIds = songIds.map(id => id + '.0');
+        const songsAvgAcc = await phib19Api.allAccAvg(PhiB19SongIds, rksInfo.rks - 0.05, rksInfo.rks + 0.05);
+
+        rksInfo.b19.forEach(rksInfo => {
+          rksInfo.record.avgAcc = songsAvgAcc[rksInfo.song.id]?.[rksInfo.level]?.accAvg
+        })
+        rksInfo.bestPhi.record.avgAcc = songsAvgAcc[rksInfo.bestPhi.song.id]?.[rksInfo.bestPhi.level]?.accAvg
+
+      }
+
       await session.send(session.text('.rendering'))
       return renderB19(
         playerName,
@@ -222,6 +241,20 @@ export function apply(ctx: Context, config: Config) {
       }))
 
       const playerName = await api.nickname(session.user.phiToken)
+
+      if (config.phiB19Top) {
+        // 获取 avg accuracy 数据
+        const songIds = [...new Set([...rksInfo.b27.map(r => r.song.id), ...rksInfo.topThreePhi.map(r => r.song.id)])];
+        const PhiB27SongIds = songIds.map(id => id + '.0');
+        const songsAvgAcc = await phib19Api.allAccAvg(PhiB27SongIds, rksInfo.rks - 0.05, rksInfo.rks + 0.05);
+
+        rksInfo.b27.forEach(rksInfo => {
+          rksInfo.record.avgAcc = songsAvgAcc[rksInfo.song.id]?.[rksInfo.level]?.accAvg
+        })
+        rksInfo.topThreePhi.forEach(rksInfo => {
+          rksInfo.record.avgAcc = songsAvgAcc[rksInfo.song.id]?.[rksInfo.level]?.accAvg
+        })
+      }
 
       await session.send(session.text('.rendering'))
       return renderB27(

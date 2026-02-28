@@ -128,6 +128,16 @@ export class PhigrosService extends Service {
         const mockChallengeRank = 'rainbow';
         const mockChallengeLevel = 15;
 
+        // 获取 avg accuracy 数据
+        const songIds = [...new Set([...rksData.b19.map(r => r.song.id), rksData.bestPhi.song.id])];
+        const PhiB19SongIds = songIds.map(id => id + '.0');
+        const songsAvgAcc = await this.phiB19API.allAccAvg(PhiB19SongIds, mockRks - 0.05, mockRks + 0.05);
+
+        rksData.b19.forEach(rksInfo => {
+          rksInfo.record.avgAcc = songsAvgAcc[rksInfo.song.id]?.[rksInfo.level]?.accAvg
+        })
+        rksData.bestPhi.record.avgAcc = songsAvgAcc[rksData.bestPhi.song.id]?.[rksData.bestPhi.level]?.accAvg
+
         // 渲染 HTML
         const vnode = renderB19(
           mockPlayerName,
