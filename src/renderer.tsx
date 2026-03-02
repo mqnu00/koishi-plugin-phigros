@@ -762,8 +762,8 @@ body {
 }
 
 #main {
-  width: 1080px;
-  height: 1920px;
+  width: 1380px;
+  height: 1420px;
   display: flex;
   flex-direction: column;
   align-items: center;
