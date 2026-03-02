@@ -781,7 +781,6 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 1620px;
   backdrop-filter: blur(20px);
 }
 
