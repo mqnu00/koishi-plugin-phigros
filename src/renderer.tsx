@@ -194,6 +194,23 @@ body {
   align-items: center;
 }
 
+.avg-acc {
+  color: var(--trans-white);
+  background: var(--trans-black);
+  position: absolute;
+  left: 30px;
+  top: -15px;
+  height: 15px;
+  width: 200px;
+  line-height: 7px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  padding-left: 10px;
+  white-space: pre;
+}
+
 .difficulty>* {
   box-shadow: var(--shadow);
   height: 40px;
@@ -370,16 +387,7 @@ body {
     <div id="main">
       <div id="header-container" class="parallelogram">
         <div id="header-title" class="para-decorate no-unskew block shadow">
-          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" style={{
-            transform: 'skew(20deg)',
-            gridArea: 'icon' ,
-            gridRow: '1 / 3 ',
-            maxWidth: '100px' ,
-            maxHeight: '75px' ,
-            margin: 'auto' ,
-            borderRadius: '20px' ,
-            boxShadow: '0 0 15px #00d2ff99' ,
-          }}/>
+          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" style="transform: skew(20deg); grid-area: icon; grid-row: 1 / 3; max-width: 100px; max-height: 75px; margin: auto; border-radius: 20px; box-shadow: 0 0 15px #00d2ff99; "/>
           <span>Phigros</span>
           <p>Ranking Score 成绩图</p>
         </div>
@@ -605,6 +613,23 @@ body {
   line-height: 10px;
 }
 
+.avg-acc {
+  color: var(--trans-white);
+  background: var(--trans-black);
+  position: absolute;
+  left: 30px;
+  top: -15px;
+  height: 15px;
+  width: 200px;
+  line-height: 7px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  padding-left: 10px;
+  white-space: pre;
+}
+
 
 .illustration {
   overflow: hidden;
@@ -768,16 +793,7 @@ body {
     <div id="main">
       <div id="header-container" class="parallelogram">
         <div id="header-title" class="para-decorate no-unskew block shadow">
-          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" style={{
-            transform: 'skew(20deg)',
-            gridArea: 'icon' ,
-            gridRow: '1 / 3 ',
-            maxWidth: '100px' ,
-            maxHeight: '75px' ,
-            margin: 'auto' ,
-            borderRadius: '20px' ,
-            boxShadow: '0 0 15px #00d2ff99' ,
-          }}/>
+          <img src="https://img.moegirl.org.cn/common/a/ab/Phigros_Icon_3.0.0.png" style="transform: skew(20deg); grid-area: icon; grid-row: 1 / 3; max-width: 100px; max-height: 75px; margin: auto; border-radius: 20px; box-shadow: 0 0 15px #00d2ff99;"/>
           <span>Phigros</span>
           <p>Ranking Score 成绩图</p>
         </div>
@@ -803,10 +819,12 @@ body {
 }
 
 function renderSong(order: string | number, rks: RKSInfo) {
-  // console.log("???")
-  // console.log(rks)
-  // console.log(rks.song.chart[rks.level].difficulty)
   return <div class="song parallelogram">
+
+    {rks.record.avgAcc && <div class="avg-acc">
+      AVG: {rks.record.avgAcc.toFixed(2)}%
+    </div>}
+
     <div class="order no-unskew">
       <div>{order}</div>
     </div>

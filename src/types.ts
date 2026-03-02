@@ -4,6 +4,7 @@ export interface LevelRecord {
   score: number
   accuracy: number
   fullCombo: boolean
+  avgAcc?: number
 }
 
 export interface Chart {

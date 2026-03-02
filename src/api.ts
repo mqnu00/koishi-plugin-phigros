@@ -1,4 +1,5 @@
 import type { SongRecord, LevelRecord, SongInfo, RKSInfo, Save, SaveSummary } from './types'
+import type { SongAvgAccuracy } from './phiB19TopTypes'
 import { createDecipheriv } from 'crypto'
 import { fromBuffer, Entry } from 'yauzl'
 import { Quester, Context } from 'koishi'
@@ -154,6 +155,26 @@ export class API {
     return res
   }
 }
+
+export class PhiB19API {
+  http: Quester
+  constructor(ctx: Context) {
+    this.http = ctx.http.extend({})
+  }
+
+  async allAccAvg (songIds: string[], minRks?: number, maxRks?: number) {
+    const res = await this.http.post('https://phib19.top:8080/get/scoreList/allAccAvg', {
+      songIds,
+      ...(minRks && { minRks }),
+      ...(maxRks && { maxRks })
+    })
+
+    return Object.fromEntries(Object.entries(res.data).map(([songId, obj]) => {
+      return [songId.replace('.0', ''), obj as SongAvgAccuracy]
+    }))
+  }
+}
+
 export function* parse(buf: Buffer): Generator<[string, SongRecord]> {
   let pos = +(buf.readUint8(0) << 24 >> 24 < 0) + 1
   while (pos < buf.length) {

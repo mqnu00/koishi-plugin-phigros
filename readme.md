@@ -17,6 +17,8 @@ Koishi plugin for everything Phigros!
 
 特别感谢 [Phigros_Resource](https://github.com/7aGiven/Phigros_Resource) 提供的谱面信息
 
+特别感谢 [phi-plugin-next](https://www.phib19.top/pages/api-docs) 提供的聚合数据分析
+
 v2.1.3 版本以前， 本项目使用了[Phigros](https://github.com/ssmzhn/Phigros)存储的歌曲仓库
 
 ## 更新记录
@@ -39,3 +41,5 @@ v2.1.2: css样式不生效导致标题图片渲染错位
 v2.1.3: mysql8.2 使用别名功能报错 没有这个问题可以不更新 关联issue[#13](https://github.com/mqnu00/koishi-plugin-phigros/issues/13)
 
 v2.2.0: 考虑到 萌娘百科 信息经常出现 单词错拼，谱面信息获取方式迁移到 [Phigros_Resource](https://github.com/7aGiven/Phigros_Resource)
+
+v2.3.0: 接入 [phi-plugin-next](https://www.phib19.top/pages/api-docs) API 获取 谱面临近 rks 的平均 acc
