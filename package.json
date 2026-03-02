@@ -10,7 +10,7 @@
     "url": "https://github.com/mqnu00/koishi-plugin-phigros"
   },
   "homepage": "https://github.com/mqnu00/koishi-plugin-phigros",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "author": {

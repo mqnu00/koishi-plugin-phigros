@@ -762,8 +762,8 @@ body {
 }
 
 #main {
-  width: 1080px;
-  height: 1920px;
+  width: 1380px;
+  height: 1420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -781,7 +781,6 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 1620px;
   backdrop-filter: blur(20px);
 }
 
